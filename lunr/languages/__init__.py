@@ -54,21 +54,21 @@ def get_nltk_builder(languages):
     Args:
         languages (list): A list of supported languages.
     """
-    all_stemmers = []
+    #all_stemmers = []
     all_stopwords_filters = []
     all_word_characters = set()
 
     for language in languages:
         if language == "en":
             # use Lunr's defaults
-            all_stemmers.append(lunr.stemmer.stemmer)
+            #all_stemmers.append(lunr.stemmer.stemmer)
             all_stopwords_filters.append(stop_word_filter)
             all_word_characters.update({r"\w"})
         else:
             stopwords, word_characters = _get_stopwords_and_word_characters(language)
-            all_stemmers.append(
-                Pipeline.registered_functions["stemmer-{}".format(language)]
-            )
+            #all_stemmers.append(
+            #    Pipeline.registered_functions["stemmer-{}".format(language)]
+            #)
             all_stopwords_filters.append(
                 generate_stop_word_filter(stopwords, language=language)
             )
@@ -81,19 +81,19 @@ def get_nltk_builder(languages):
     )
     builder.pipeline.reset()
 
-    for fn in chain([multi_trimmer], all_stopwords_filters, all_stemmers):
+    for fn in chain([multi_trimmer], all_stopwords_filters):#, all_stemmers):
         builder.pipeline.add(fn)
-    for fn in all_stemmers:
-        builder.search_pipeline.add(fn)
+    #for fn in all_stemmers:
+    #    builder.search_pipeline.add(fn)
 
     return builder
 
 
 def register_languages():
     """Register all supported languages to ensure compatibility."""
-    for language in set(SUPPORTED_LANGUAGES) - {"en"}:
-        language_stemmer = partial(nltk_stemmer, get_language_stemmer(language))
-        Pipeline.register_function(language_stemmer, "stemmer-{}".format(language))
+    #for language in set(SUPPORTED_LANGUAGES) - {"en"}:
+    #    language_stemmer = partial(nltk_stemmer, get_language_stemmer(language))
+    #    Pipeline.register_function(language_stemmer, "stemmer-{}".format(language))
 
 
 if LANGUAGE_SUPPORT:  # pragma: no cover

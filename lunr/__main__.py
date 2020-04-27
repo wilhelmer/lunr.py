@@ -46,8 +46,8 @@ def lunr(ref, fields, documents, languages=None):
         builder = lang.get_nltk_builder(languages)
     else:
         builder = Builder()
-        builder.pipeline.add(trimmer, stop_word_filter, stemmer)
-        builder.search_pipeline.add(stemmer)
+        builder.pipeline.add(trimmer, stop_word_filter) #, stemmer)
+        #builder.search_pipeline.add(stemmer)
 
     builder.ref(ref)
     for field in fields:
